@@ -2,6 +2,8 @@ package silin.study.sounddroid;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,6 +13,7 @@ import java.util.List;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import silin.study.sounddroid.adapters.TracksAdapter;
 import silin.study.sounddroid.soundcloud.SoundCloud;
 import silin.study.sounddroid.soundcloud.SoundCloudService;
 import silin.study.sounddroid.soundcloud.Track;
@@ -23,6 +26,10 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        RecyclerView songRecyclerView = (RecyclerView) findViewById(R.id.song_rv);
+        songRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        songRecyclerView.setAdapter(new TracksAdapter());
 
         SoundCloudService soundCloudService = SoundCloud.getInstance().getService();
         soundCloudService.searchSongs("dark horse", new Callback<List<Track>>() {
