@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -40,6 +41,9 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
         @InjectView(R.id.track_title)
         TextView mTitleTextView;
+
+        @InjectView(R.id.track_thumbnail)
+        ImageView mThumbnailImageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
