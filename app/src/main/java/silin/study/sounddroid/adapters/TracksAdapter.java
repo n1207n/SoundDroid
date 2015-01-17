@@ -1,11 +1,14 @@
 package silin.study.sounddroid.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -17,7 +20,10 @@ import silin.study.sounddroid.soundcloud.Track;
 public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.ViewHolder> {
     private List<Track> mTracks;
 
-    public TracksAdapter(List<Track> trackList) {
+    private Context mContext;
+
+    public TracksAdapter(Context context, List<Track> trackList) {
+        mContext = context;
         mTracks = trackList;
     }
 
@@ -31,6 +37,7 @@ public class TracksAdapter extends RecyclerView.Adapter<TracksAdapter.ViewHolder
     @Override
     public void onBindViewHolder(TracksAdapter.ViewHolder viewHolder, int i) {
         viewHolder.mTitleTextView.setText(mTracks.get(i).getTitle());
+        Picasso.with(mContext).load(mTracks.get(i).getAvatarURL()).into(viewHolder.mThumbnailImageView);
     }
 
     @Override

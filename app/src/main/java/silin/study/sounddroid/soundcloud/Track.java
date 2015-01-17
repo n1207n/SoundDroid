@@ -9,6 +9,9 @@ public class Track {
     @SerializedName("stream_url")
     private String mStreamURL;
 
+    @SerializedName("artwork_url")
+    private String mArtworkURL;
+
     @SerializedName("id")
     private int mID;
 
@@ -24,15 +27,19 @@ public class Track {
         return mStreamURL;
     }
 
-    public void setStreamURL(String streamURL) {
-        mStreamURL = streamURL;
+    public String getArtworkURL() {
+        return mArtworkURL;
     }
 
     public int getID() {
         return mID;
     }
 
-    public void setID(int ID) {
-        mID = ID;
+    public String getAvatarURL() {
+        String avatarURL = mArtworkURL;
+
+        if (avatarURL != null) avatarURL.replace("large", "tiny");
+
+        return avatarURL;
     }
 }
