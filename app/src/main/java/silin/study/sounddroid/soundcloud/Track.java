@@ -1,4 +1,4 @@
-package silin.study.sounddroid.objects;
+package silin.study.sounddroid.soundcloud;
 
 import com.google.gson.annotations.SerializedName;
 
