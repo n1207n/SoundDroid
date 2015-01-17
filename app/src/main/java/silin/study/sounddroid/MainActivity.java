@@ -8,8 +8,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -22,20 +25,32 @@ import silin.study.sounddroid.soundcloud.Track;
 public class MainActivity extends ActionBarActivity {
     private static final String TAG = "MainActivity";
 
+    @InjectView(R.id.song_rv)
+    RecyclerView mSongRecyclerView;
+
+    private TracksAdapter mTracksAdapter;
+    private List<Track> mTracks;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView songRecyclerView = (RecyclerView) findViewById(R.id.song_rv);
-        songRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        songRecyclerView.setAdapter(new TracksAdapter());
+        ButterKnife.inject(this);
+
+        mSongRecyclerView = (RecyclerView) findViewById(R.id.song_rv);
+        mSongRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mTracks = new ArrayList<Track>();
+        mTracksAdapter = new TracksAdapter(mTracks);
+        mSongRecyclerView.setAdapter(mTracksAdapter);
 
         SoundCloudService soundCloudService = SoundCloud.getInstance().getService();
         soundCloudService.searchSongs("dark horse", new Callback<List<Track>>() {
             @Override
             public void success(List<Track> tracks, Response response) {
-                Log.d(TAG, tracks.get(0).getTitle());
+                mTracks.clear();
+                mTracks.addAll(tracks);
+                mTracksAdapter.notifyDataSetChanged();
             }
 
             @Override
