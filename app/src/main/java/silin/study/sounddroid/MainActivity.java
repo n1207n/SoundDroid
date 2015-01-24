@@ -1,5 +1,7 @@
 package silin.study.sounddroid;
 
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,12 +50,23 @@ public class MainActivity extends ActionBarActivity {
     private TracksAdapter mTracksAdapter;
     private List<Track> mTracks;
 
+    private MediaPlayer mMediaPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         ButterKnife.inject(this);
+
+        mMediaPlayer = new MediaPlayer();
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.start();
+            }
+        });
 
         mSongRecyclerView = (RecyclerView) findViewById(R.id.song_rv);
         mSongRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -64,6 +78,13 @@ public class MainActivity extends ActionBarActivity {
                 Track selectedTrack = mTracks.get(position);
                 mSelectedSongTitleTextView.setText(selectedTrack.getTitle());
                 Picasso.with(MainActivity.this).load(selectedTrack.getAvatarURL()).into(mSelectedSongThumbnailImageView);
+
+                try {
+                    mMediaPlayer.setDataSource(selectedTrack.getStreamURL() + "?client_id=" + SoundCloudService.CLIENT_ID);
+                    mMediaPlayer.prepareAsync();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         mSongRecyclerView.setAdapter(mTracksAdapter);
