@@ -18,7 +18,9 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -111,7 +113,20 @@ public class MainActivity extends ActionBarActivity {
         mSongRecyclerView.setAdapter(mTracksAdapter);
 
         SoundCloudService soundCloudService = SoundCloud.getInstance().getService();
-        soundCloudService.searchSongs("Trance", new Callback<List<Track>>() {
+//        soundCloudService.searchSongs("Trance", new Callback<List<Track>>() {
+//            @Override
+//            public void success(List<Track> tracks, Response response) {
+//                mTracks.clear();
+//                mTracks.addAll(tracks);
+//                mTracksAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//                Log.d(TAG, error.toString());
+//            }
+//        });
+        soundCloudService.getRecentSongs(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()), new Callback<List<Track>>() {
             @Override
             public void success(List<Track> tracks, Response response) {
                 mTracks.clear();
@@ -121,7 +136,7 @@ public class MainActivity extends ActionBarActivity {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d(TAG, error.toString());
+
             }
         });
     }

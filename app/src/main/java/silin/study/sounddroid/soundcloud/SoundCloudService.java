@@ -1,5 +1,6 @@
 package silin.study.sounddroid.soundcloud;
 
+import java.util.Date;
 import java.util.List;
 
 import retrofit.Callback;
@@ -11,4 +12,7 @@ public interface SoundCloudService {
 
     @GET("/tracks?client_id="+CLIENT_ID)
     public void searchSongs(@Query("q") String query, Callback<List<Track>> callback);
+
+    @GET("/tracks?client_id="+CLIENT_ID)
+    public void getRecentSongs(@Query("created_at") String date, Callback<List<Track>> callback);
 }
