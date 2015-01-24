@@ -8,6 +8,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +38,12 @@ public class MainActivity extends ActionBarActivity {
     @InjectView(R.id.player_tb)
     Toolbar mPlayerToolbar;
 
+    @InjectView(R.id.selected_song_title_tv)
+    TextView mSelectedSongTitleTextView;
+
+    @InjectView(R.id.selected_song_thumbnail_iv)
+    ImageView mSelectedSongThumbnailImageView;
+
     private TracksAdapter mTracksAdapter;
     private List<Track> mTracks;
 
@@ -46,6 +58,14 @@ public class MainActivity extends ActionBarActivity {
         mSongRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mTracks = new ArrayList<Track>();
         mTracksAdapter = new TracksAdapter(this, mTracks);
+        mTracksAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Track selectedTrack = mTracks.get(position);
+                mSelectedSongTitleTextView.setText(selectedTrack.getTitle());
+                Picasso.with(MainActivity.this).load(selectedTrack.getAvatarURL()).into(mSelectedSongThumbnailImageView);
+            }
+        });
         mSongRecyclerView.setAdapter(mTracksAdapter);
 
         SoundCloudService soundCloudService = SoundCloud.getInstance().getService();

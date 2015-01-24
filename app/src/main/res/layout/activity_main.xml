@@ -19,12 +19,13 @@
         android:layout_height="@dimen/player_toolbar_height">
 
         <ImageView
+            android:id="@+id/selected_song_thumbnail_iv"
             android:background="#FF0000"
             android:layout_width="@dimen/avatar_size"
             android:layout_height="@dimen/avatar_size"/>
 
         <TextView
-            android:text="Hello World"
+            android:id="@+id/selected_song_title_tv"
             android:paddingLeft="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
