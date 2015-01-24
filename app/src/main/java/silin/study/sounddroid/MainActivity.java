@@ -47,6 +47,9 @@ public class MainActivity extends ActionBarActivity {
     @InjectView(R.id.selected_song_thumbnail_iv)
     ImageView mSelectedSongThumbnailImageView;
 
+    @InjectView(R.id.player_state_iv)
+    ImageView mPlayerStateImageView;
+
     private TracksAdapter mTracksAdapter;
     private List<Track> mTracks;
 
@@ -64,7 +67,14 @@ public class MainActivity extends ActionBarActivity {
         mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                mp.start();
+                toggleSongState();
+            }
+        });
+
+        mPlayerStateImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleSongState();
             }
         });
 
@@ -103,6 +113,18 @@ public class MainActivity extends ActionBarActivity {
                 Log.d(TAG, error.toString());
             }
         });
+    }
+
+    private void toggleSongState() {
+        if (mMediaPlayer.isPlaying()) {
+            mMediaPlayer.pause();
+            mPlayerStateImageView.setImageResource(R.drawable.ic_play);
+        }
+
+        else {
+            mMediaPlayer.start();
+            mPlayerStateImageView.setImageResource(R.drawable.ic_pause);
+        }
     }
 
     @Override

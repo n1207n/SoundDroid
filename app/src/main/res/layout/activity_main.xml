@@ -1,9 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                tools:context=".MainActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context=".MainActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/song_rv"
@@ -13,22 +13,27 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/player_tb"
-        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:background="@color/secondaryColor"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/player_toolbar_height">
+        android:layout_height="@dimen/player_toolbar_height"
+        android:background="@color/secondaryColor"
+        android:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <ImageView
             android:id="@+id/selected_song_thumbnail_iv"
-            android:background="#FF0000"
             android:layout_width="@dimen/avatar_size"
             android:layout_height="@dimen/avatar_size"/>
 
         <TextView
             android:id="@+id/selected_song_title_tv"
-            android:paddingLeft="8dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"/>
+
+        <ImageView
+            android:layout_width="@dimen/avatar_size"
+            android:layout_height="@dimen/avatar_size"
+            android:id="@+id/player_state_iv"
+            android:layout_gravity="right"/>
     </android.support.v7.widget.Toolbar>
 
 </LinearLayout>
