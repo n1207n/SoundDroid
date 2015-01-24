@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +29,9 @@ public class MainActivity extends ActionBarActivity {
     @InjectView(R.id.song_rv)
     RecyclerView mSongRecyclerView;
 
+    @InjectView(R.id.player_tb)
+    Toolbar mPlayerToolbar;
+
     private TracksAdapter mTracksAdapter;
     private List<Track> mTracks;
 
@@ -45,7 +49,7 @@ public class MainActivity extends ActionBarActivity {
         mSongRecyclerView.setAdapter(mTracksAdapter);
 
         SoundCloudService soundCloudService = SoundCloud.getInstance().getService();
-        soundCloudService.searchSongs("dark horse", new Callback<List<Track>>() {
+        soundCloudService.searchSongs("Trance", new Callback<List<Track>>() {
             @Override
             public void success(List<Track> tracks, Response response) {
                 mTracks.clear();
@@ -75,7 +79,8 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_search_new_songs) {
+//            new AlertDialog.Builder(this).setTitle("Looking for new jam")
             return true;
         }
 

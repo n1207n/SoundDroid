@@ -11,4 +11,5 @@
 
     <dimen name="avatar_size">48dp</dimen>
     <dimen name="avatar_padding">4dp</dimen>
+    <dimen name="player_toolbar_height">56dp</dimen>
 </resources>
