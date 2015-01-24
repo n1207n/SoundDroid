@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -34,7 +35,7 @@ import silin.study.sounddroid.soundcloud.SoundCloudService;
 import silin.study.sounddroid.soundcloud.Track;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements SearchView.OnQueryTextListener {
     private static final String TAG = "MainActivity";
 
     @InjectView(R.id.song_rv)
@@ -56,6 +57,8 @@ public class MainActivity extends ActionBarActivity {
     private List<Track> mTracks;
 
     private MediaPlayer mMediaPlayer;
+    private SearchView mSearchView;
+    private SoundCloudService mSoundCloudService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,26 +115,11 @@ public class MainActivity extends ActionBarActivity {
         });
         mSongRecyclerView.setAdapter(mTracksAdapter);
 
-        SoundCloudService soundCloudService = SoundCloud.getInstance().getService();
-//        soundCloudService.searchSongs("Trance", new Callback<List<Track>>() {
-//            @Override
-//            public void success(List<Track> tracks, Response response) {
-//                mTracks.clear();
-//                mTracks.addAll(tracks);
-//                mTracksAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void failure(RetrofitError error) {
-//                Log.d(TAG, error.toString());
-//            }
-//        });
-        soundCloudService.getRecentSongs(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()), new Callback<List<Track>>() {
+        mSoundCloudService = SoundCloud.getInstance().getService();
+        mSoundCloudService.getRecentSongs(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()), new Callback<List<Track>>() {
             @Override
             public void success(List<Track> tracks, Response response) {
-                mTracks.clear();
-                mTracks.addAll(tracks);
-                mTracksAdapter.notifyDataSetChanged();
+                updateTracks(tracks);
             }
 
             @Override
@@ -139,6 +127,12 @@ public class MainActivity extends ActionBarActivity {
 
             }
         });
+    }
+
+    private void updateTracks(List<Track> tracks) {
+        mTracks.clear();
+        mTracks.addAll(tracks);
+        mTracksAdapter.notifyDataSetChanged();
     }
 
     private void toggleSongState() {
@@ -171,6 +165,9 @@ public class MainActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        mSearchView = (SearchView) menu.findItem(R.id.action_search_view).getActionView();
+        mSearchView.setOnQueryTextListener(this);
         return true;
     }
 
@@ -183,10 +180,33 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search_view) {
-//            new AlertDialog.Builder(this).setTitle("Looking for new jam")
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        Log.d(TAG, query);
+        mSearchView.clearFocus();
+
+        mSoundCloudService.searchSongs(query, new Callback<List<Track>>() {
+            @Override
+            public void success(List<Track> tracks, Response response) {
+                updateTracks(tracks);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        return false;
     }
 }
