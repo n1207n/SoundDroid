@@ -77,6 +77,12 @@ public class MainActivity extends ActionBarActivity {
                 toggleSongState();
             }
         });
+        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mPlayerStateImageView.setImageResource(R.drawable.ic_play);
+            }
+        });
 
         mSongRecyclerView = (RecyclerView) findViewById(R.id.song_rv);
         mSongRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -88,6 +94,11 @@ public class MainActivity extends ActionBarActivity {
                 Track selectedTrack = mTracks.get(position);
                 mSelectedSongTitleTextView.setText(selectedTrack.getTitle());
                 Picasso.with(MainActivity.this).load(selectedTrack.getAvatarURL()).into(mSelectedSongThumbnailImageView);
+
+                if (mMediaPlayer.isPlaying()) {
+                    mMediaPlayer.stop();
+                    mMediaPlayer.reset();
+                }
 
                 try {
                     mMediaPlayer.setDataSource(selectedTrack.getStreamURL() + "?client_id=" + SoundCloudService.CLIENT_ID);
@@ -124,6 +135,20 @@ public class MainActivity extends ActionBarActivity {
         else {
             mMediaPlayer.start();
             mPlayerStateImageView.setImageResource(R.drawable.ic_pause);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (mMediaPlayer != null) {
+            if (mMediaPlayer.isPlaying()) {
+                mMediaPlayer.stop();
+            }
+
+            mMediaPlayer.release();
+            mMediaPlayer = null;
         }
     }
 
