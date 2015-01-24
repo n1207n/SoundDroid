@@ -182,7 +182,7 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_search_new_songs) {
+        if (id == R.id.action_search_view) {
 //            new AlertDialog.Builder(this).setTitle("Looking for new jam")
             return true;
         }

@@ -4,6 +4,6 @@
     <string name="app_name">SoundDroid</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="search_new_songs">Search new songs</string>
+    <string name="search">Search</string>
 
 </resources>

@@ -2,8 +2,10 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".MainActivity">
-    <item android:id="@+id/action_search_new_songs"
-          android:title="@string/search_new_songs"
+    <item android:id="@+id/action_search_view"
+          android:title="@string/search"
           android:orderInCategory="100"
-          app:showAsAction="never"/>
+          android:icon="@drawable/ic_search"
+          app:actionViewClass="android.widget.SearchView"
+          app:showAsAction="ifRoom|collapseActionView"/>
 </menu>
