@@ -3,6 +3,7 @@ package silin.study.sounddroid;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -55,6 +56,7 @@ public class MainActivity extends ActionBarActivity implements SearchView.OnQuer
 
     private TracksAdapter mTracksAdapter;
     private List<Track> mTracks;
+    private List<Track> mPreviousTracks;
 
     private MediaPlayer mMediaPlayer;
     private SearchView mSearchView;
@@ -168,6 +170,21 @@ public class MainActivity extends ActionBarActivity implements SearchView.OnQuer
 
         mSearchView = (SearchView) menu.findItem(R.id.action_search_view).getActionView();
         mSearchView.setOnQueryTextListener(this);
+
+        MenuItemCompat.setOnActionExpandListener(menu.findItem(R.id.action_search_view), new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                mPreviousTracks = new ArrayList<Track>(mTracks);
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                updateTracks(mPreviousTracks);
+                return true;
+            }
+        });
+        
         return true;
     }
 
